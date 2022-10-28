@@ -1,0 +1,4 @@
+# Server Sent Events Relay
+This is a minimal webserver that relays messages between clients using SSE, based on my previous work on [SugoiOBS](https://github.com/sugoidogo/sugoiobs), which has since been replaced by [OBS-WebSocket](https://github.com/obsproject/obs-websocket). This project is useful for providing a communication channel between web pages that otherwise cannot establish communication, like as a signaling server for setting up a webrtc connection.
+# Usage
+This server has no requirements beyond `python >= 3.7`. On initial run, a default config file will be generated and the server will begin listening on it's default port. All paths are SSE endpoints which relay any messages posted to them. You can also include an `event` or `id` header in your post requests for the resulting server sent event.
