@@ -1,0 +1,11 @@
+[Unit]
+Description=Server Sent Events Relay
+Wants=network-online.target
+Requires=network-online.target
+
+[Service]
+WorkingDirectory=/opt/sser
+ExecStart=/usr/bin/env python3 sser.py
+
+[Install]
+WantedBy=multi-user.target
