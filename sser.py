@@ -14,6 +14,9 @@ except:
             'IP':'localhost',
             'Port':4000
         }
+        config['ISOLATION']={
+            'headers':'client_id,user_id'
+        }
         config.write(configFile)
 
 print('config loaded, initializing server')
@@ -29,6 +32,9 @@ class ServerSentEventsRelay(BaseHTTPRequestHandler):
         super().end_headers()
         return False
     def do_GET(self):
+        if 'headers' in config['ISOLATION']:
+            for header in config['ISOLATION'].get('headers').split(','):
+                self.path=self.headers[header]+'/'+self.path
         if self.path not in sseClients:
             sseClients[self.path]=[]
         sseClients[self.path].append(self.wfile)
@@ -36,6 +42,9 @@ class ServerSentEventsRelay(BaseHTTPRequestHandler):
         request.send_header('Content-Type','text/event-stream')
         request.end_headers()
     def do_POST(self):
+        if 'headers' in config['ISOLATION']:
+            for header in config['ISOLATION'].get('headers').split(','):
+                self.path=self.headers[header]+'/'+self.path
         if(self.path not in sseClients):
             return self.send_error(404)
         for wfile in sseClients[self.path]:
